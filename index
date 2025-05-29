@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scadenzario PRO | Gestione Scadenze AI</title>
+    <style>
+        /* === VARIABILI GLOBALI === */
+        :root {
+            --primary: #6c5ce7;
+            --primary-dark: #5649c0;
+            --secondary: #00cec9;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --gray: #dfe6e9;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        /* === RESET & BASE === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            color: var(--dark);
+            background-color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        /* === ANIMAZIONI === */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === COMPONENTI === */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary-dark), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+        }
+
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #666;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* === HERO === */
+        .hero {
+            height: 100vh;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(-45deg, #6c5ce7, #00cec9, #0984e3, #00b894);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: white;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeIn 1s ease 0.2s forwards;
+            opacity: 0;
+        }
+
+        .hero .btn {
+            animation: fadeIn 1s ease 0.4s forwards, pulse 2s ease infinite 1.4s;
+            opacity: 0;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto 0;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* === FEATURES === */
+        .features {
+            position: relative;
+            background-color: white;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom right, transparent 49.5%, white 50%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .feature-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .feature-card h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+
+        .feature-card p {
+            text-align: center;
+            color: #666;
+        }
+
+        /* === HOW IT WORKS === */
+        .how-it-works {
+            background-color: var(--light);
+            position: relative;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.6s ease;
+        }
+
+        .step.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .step:nth-child(even) {
+            transform: translateX(50px);
+            flex-direction: row-reverse;
+        }
+
+        .step:nth-child(even).visible {
+            transform: translateX(0);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin: 0 20px;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h3 {
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        /* === TESTIMONIALS === */
+        .testimonials {
+            background-color: white;
+            position: relative;
+        }
+
+        .testimonials::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom right, transparent 49.5%, white 50%);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .testimonial-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 5rem;
+            color: var(--gray);
+            font-family: Georgia, serif;
+            line-height: 1;
+            z-index: 0;
+        }
+
+        .testimonial-content {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--gray);
+            margin-right: 15px;
+            overflow: hidden;
+        }
+
+        .author-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .author-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* === PRICING === */
+        .pricing {
+            background-color: var(--light);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .pricing-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--accent);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .pricing-features {
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            list-style: none;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        /* === CTA === */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .cta .btn {
+            background: white;
+            color: var(--primary);
+            font-size: 1.2rem;
+            padding: 20px 40px;
+        }
+
+        .cta .btn:hover {
+            background: var(--light);
+        }
+
+        /* === FOOTER === */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-logo span {
+            color: var(--secondary);
+        }
+
+        .footer-about p {
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--secondary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .step:nth-child(even) {
+                flex-direction: column;
+            }
+
+            .step-number {
+                margin: 0 auto 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section {
+                padding: 60px 0;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- === HERO SECTION === -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Dimentica le scadenze, vivi sereno</h1>
+            <p>Scadenzario rileva automaticamente date importanti da email, documenti e screenshot, e ti avvisa prima che sia troppo tardi</p>
+            <a href="#pricing" class="btn">Inizia Gratis per 14 giorni</a>
+            
+            <div class="hero-image">
+                <!-- SVG Illustration -->
+                <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#6c5ce7" />
+                            <stop offset="100%" stop-color="#00cec9" />
+                        </linearGradient>
+                    </defs>
+                    <rect x="50" y="50" width="400" height="400" rx="20" fill="white" opacity="0.9" />
+                    <rect x="50" y="50" width="400" height="80" rx="20" fill="url(#gradient)" />
+                    <text x="250" y="100" font-family="Arial" font-size="40" fill="white" text-anchor="middle" font-weight="bold">SCADENZARIO</text>
+                    
+                    <!-- Calendar Dates -->
+                    <rect x="80" y="180" width="120" height="120" rx="15" fill="#6c5ce7" />
+                    <text x="140" y="250" font-family="Arial" font-size="60" fill="white" text-anchor="middle" font-weight="bold">15</text>
+                    <text x="140" y="280" font-family="Arial" font-size="20" fill="white" text-anchor="middle">Ottobre</text>
+                    
+                    <rect x="230" y="180" width="120" height="120" rx="15" fill="#00cec9" />
+                    <text x="290" y="250" font-family="Arial" font-size="60" fill="white" text-anchor="middle" font-weight="bold">!</text>
+                    
+                    <!-- Notification Bell -->
+                    <circle cx="400" cy="100" r="15" fill="#fd79a8" />
+                    <animateTransform attributeName="transform" attributeType="XML" type="scale" values="1;1.2;1" dur="2s" repeatCount="indefinite" />
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- === FEATURES SECTION === -->
+    <section class="section features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Potenti funzionalità</h2>
+                <p>Scadenzario automatizza completamente la gestione delle scadenze</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                    </div>
+                    <h3>Caricamento Automatico</h3>
+                    <p>Invia email, PDF o screenshot. Il sistema riconosce automaticamente date e importi.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M11,17H7A2,2 0 0,1 5,15V9A2,2 0 0,1 7,7H11V9H7V15H11V17M13,13H15V15H17V13H19V11H17V9H15V11H13V13M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"/>
+                        </svg>
+                    </div>
+                    <h3>Analisi Intelligente</h3>
+                    <p>La nostra AI estrae le informazioni cruciali e le organizza in un calendario visivo.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17M12,8A1,1 0 0,1 13,9A1,1 0 0,1 12,10A1,1 0 0,1 11,9A1,1 0 0,1 12,8Z"/>
+                        </svg>
+                    </div>
+                    <h3>Notifiche Personalizzate</h3>
+                    <p>Ricevi alert via email, SMS o notifiche push con il giusto anticipo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === HOW IT WORKS === -->
+    <section class="section how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>Come funziona</h2>
+                <p>Tre semplici passaggi per dire addio allo stress delle scadenze</p>
+            </div>
+            
+            <div class="steps">
+                <!-- Step 1 -->
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Carica i tuoi documenti</h3>
+                        <p>Invia email, PDF, screenshot o foto delle tue ricevute. Scadenzario supporta tutti i formati più comuni.</p>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Lascia fare alla nostra AI</h3>
+                        <p>Il sistema analizza automaticamente i tuoi documenti, identifica scadenze, importi e dettagli importanti.</p>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Ricevi notifiche</h3>
+                        <p>Ti avvisiamo con il giusto anticipo via email, SMS o notifica push. Mai più una scadenza dimenticata!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === TESTIMONIALS === -->
+    <section class="section testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Cosa dicono i nostri utenti</h2>
+                <p>Abbiamo già aiutato migliaia di persone a vivere più serene</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>Scadenzario mi ha salvato da multe per ritardo nei pagamenti. Ora gestisco tutto senza stress!</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <!-- SVG placeholder for avatar -->
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="40" r="20" fill="#6c5ce7" />
+                                <circle cx="50" cy="100" r="40" fill="#6c5ce7" />
+                            </svg>
+                        </div>
+                        <div class="author-info">
+                            <h4>Marco Rossi</h4>
+                            <p>Freelance Designer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>Finalmente un tool che funziona davvero! Ho cancellato 5 abbonamenti inutili che pagavo da mesi senza accorgermene.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="40" r="20" fill="#fd79a8" />
+                                <circle cx="50" cy="100" r="40" fill="#fd79a8" />
+                            </svg>
+                        </div>
+                        <div class="author-info">
+                            <h4>Laura Bianchi</h4>
+                            <p>Piccola Impresa</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>Come commercialista, lo consiglio a tutti i miei clienti. Risparmiano tempo e denaro.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="40" r="20" fill="#00cec9" />
+                                <circle cx="50" cy="100" r="40" fill="#00cec9" />
+                            </svg>
+                        </div>
+                        <div class="author-info">
+                            <h4>Andrea Verdi</h4>
+                            <p>Commercialista</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === PRICING === -->
+    <section class="section pricing" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Piani tariffari</h2>
+                <p>Scegli la soluzione perfetta per le tue esigenze</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <!-- Plan 1 -->
+                <div class="pricing-card">
+                    <h3>Base</h3>
+                    <div class="price">€0<span>/mese</span></div>
+                    <ul class="pricing-features">
+                        <li>5 scadenze/mese</li>
+                        <li>Notifiche email</li>
+                        <li>Supporto base</li>
+                        <li>Analisi documenti</li>
+                    </ul>
+                    <a href="#" class="btn">Inizia Gratis</a>
+                </div>
+                
+                <!-- Plan 2 -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">POPOLARE</div>
+                    <h3>Pro</h3>
+                    <div class="price">€9<span>/mese</span></div>
+                    <ul class="pricing-features">
+                        <li>Scadenze illimitate</li>
+                        <li>Notifiche email + SMS</li>
+                        <li>Supporto prioritario</li>
+                        <li>Analisi avanzata</li>
+                        <li>Report mensili</li>
+                    </ul>
+                    <a href="#" class="btn">Scopri di più</a>
+                </div>
+                
+                <!-- Plan 3 -->
+                <div class="pricing-card">
+                    <h3>Azienda</h3>
+                    <div class="price">€29<span>/mese</span></div>
+                    <ul class="pricing-features">
+                        <li>Team fino a 5 persone</li>
+                        <li>Tutte le feature Pro</li>
+                        <li>Integrazione API</li>
+                        <li>Dashboard team</li>
+                        <li>Supporto dedicato</li>
+                    </ul>
+                    <a href="#" class="btn">Contattaci</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- === CTA === -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Pronto a liberarti dallo stress delle scadenze?</h2>
+                <p>Unisciti a migliaia di utenti che hanno già semplificato la loro vita con Scadenzario</p>
+                <a href="#pricing" class="btn">Inizia la tua prova gratuita</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- === FOOTER === -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">Scade<span>nzario</span></div>
+                    <p>La soluzione intelligente per gestire le scadenze senza stress.</p>
+                    <div class="social-links">
+                        <a href="#"><svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z"/></svg></a>
+                        <a href="#"><svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8A1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5a5 5 0 0 1-5 5a5 5 0 0 1-5-5a5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3Z"/></svg></a>
+                        <a href="#"><svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M22.46 6c-.77.35-1.6.58-2.46.69c.88-.53 1.56-1.37 1.88-2.38c-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29c0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15c0 1.49.75 2.81 1.91 3.56c-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07a4.28 4.28 0 0 0 4 2.98a8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21C16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56c.84-.6 1.56-1.36 2.14-2.23Z"/></svg></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Link veloci</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#features">Funzionalità</a></li>
+                        <li><a href="#pricing">Prezzi</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Supporto</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contattaci</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Termini di servizio</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Contatti</h3>
+                    <ul>
+                        <li>Email: info@scadenzario.com</li>
+                        <li>Telefono: +39 123 456789</li>
+                        <li>Indirizzo: Via Roma 1, Milano</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Scadenzario. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // === ANIMAZIONI AL SCROLL ===
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animazione feature cards
+            const featureCards = document.querySelectorAll('.feature-card');
+            const steps = document.querySelectorAll('.step');
+            const testimonials = document.querySelectorAll('.testimonial-card');
+            const pricingCards = document.querySelectorAll('.pricing-card');
+            
+            const animateOnScroll = () => {
+                // Feature cards
+                featureCards.forEach((card, index) => {
+                    const cardPosition = card.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (cardPosition < screenPosition) {
+                        card.classList.add('visible');
+                    }
+                });
+                
+                // Steps
+                steps.forEach((step, index) => {
+                    const stepPosition = step.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (stepPosition < screenPosition) {
+                        setTimeout(() => {
+                            step.classList.add('visible');
+                        }, index * 200);
+                    }
+                });
+                
+                // Testimonials
+                testimonials.forEach((testimonial, index) => {
+                    const testimonialPosition = testimonial.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (testimonialPosition < screenPosition) {
+                        setTimeout(() => {
+                            testimonial.classList.add('visible');
+                        }, index * 150);
+                    }
+                });
+                
+                // Pricing cards
+                pricingCards.forEach((card, index) => {
+                    const cardPosition = card.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (cardPosition < screenPosition) {
+                        setTimeout(() => {
+                            card.classList.add('visible');
+                        }, index * 100);
+                    }
+                });
+            };
+            
+            // Esegui al caricamento e allo scroll
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll();
+            
+            // Animazione pulsante hero
+            const heroBtn = document.querySelector('.hero .btn');
+            setInterval(() => {
+                heroBtn.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    heroBtn.style.transform = 'scale(1)';
+                }, 500);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
